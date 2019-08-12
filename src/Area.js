@@ -12,12 +12,12 @@ export default class Area extends React.Component
 
     render() {
         return (
-            <textarea value={this.state.program} onChange={this.changeHandler.bind(this)} />
+            <textarea value={this.state.program} onChange={this.changeHandler} />
         )
     }
 
-    changeHandler(event) {
-        const text = event.target.value;
+    changeHandler = (e) => {
+        const text = e.target.value;
         this.setState({program: text});
         this.props.onChange(text);
     }

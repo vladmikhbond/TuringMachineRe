@@ -81,13 +81,14 @@ export default class App extends React.Component
       return;
     tm.step();
 
-    let head = tm.tape[tm.headPos];
-    let left = tm.tape.slice(MARGIN - 5, tm.headPos).join('');
-    let right = tm.tape.slice(tm.headPos + 1, MARGIN + 25).join('') ;
-    let state = (tm.state + '    ').slice(0, 5);
+    const head = tm.tape[tm.headPos];
+    const left = tm.tape.slice(MARGIN - 5, tm.headPos).join('');
+    const right = tm.tape.slice(tm.headPos + 1, MARGIN + 25).join('') ;
+    const state = (tm.state + '    ').slice(0, 5);
 
-    this.state.printed.push({head, left, right, state});
-    this.setState({printed: this.state.printed});
+    const arr = this.state.printed.slice();
+    arr.push({head, left, right, state});
+    this.setState({printed: arr});
   };
 
   runClick = () => {
@@ -105,7 +106,8 @@ export default class App extends React.Component
   };
 
   helpClick = () => {
-    this.setState({helpOpen: !this.state.helpOpen});
+    const flag = !this.state.helpOpen;
+    this.setState({helpOpen: flag});
   };
 
 }
