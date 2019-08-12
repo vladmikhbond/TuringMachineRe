@@ -12,7 +12,7 @@ export default class Area extends React.Component
 
     render() {
         return (
-            <textarea value={this.state.program} onChange={this.changeHandler.bind(this)}></textarea>
+            <textarea value={this.state.program} onChange={this.changeHandler.bind(this)} />
         )
     }
 

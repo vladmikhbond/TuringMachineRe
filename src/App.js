@@ -1,7 +1,7 @@
 import React from 'react';
-import './App.css';
 import Area from './Area.js';
 import Printer from './Printer.js';
+import Help from './Help.js';
 import {Turing, MARGIN} from "./model";
 
 const sample = `sa = sbR
@@ -12,7 +12,7 @@ export default class App extends React.Component
 {
   constructor(props) {
     super(props);
-    this.state = {input: 'aaa', program: sample, printed: [] };
+    this.state = {input: 'aaa', program: sample, printed: [], helpOpen: false };
   }
 
   render() {
@@ -29,11 +29,16 @@ export default class App extends React.Component
                 <button onClick={this.initClick}> ■</button>
                 <button onClick={this.runClick}> >></button>
                 <button onClick={this.stepClick}> ></button>
-                <button> ?</button>
+                <button onClick={this.helpClick}> ?</button>
               </div>
             </td>
             <td>
               <Printer lines={this.state.printed}/>
+            </td>
+          </tr>
+          <tr>
+            <td colSpan="2">
+              <Help open={this.state.helpOpen} />
             </td>
           </tr>
           </tbody>
@@ -45,23 +50,30 @@ export default class App extends React.Component
     this.init();
   }
 
+  init = () => {
+    // create model
+    this.tm = new Turing(this.state.program, this.state.input);
+    // clear printer
+    this.setState({printed: []})
+  }
+
   /////////////////////////// change handlers /////////////////////////
 
   inputChangeHandler = (e) => {
     this.setState({input: e.target.value.trim()});
     setTimeout(this.init, 100);
-  }
+  };
 
   areaChangedHandler = (e) => {
     this.setState({program: e.trim()});
     setTimeout(this.init, 100);
-  }
+  };
 
   /////////////////////////// button click handlers /////////////////////////
 
   initClick = () => {
     this.init();
-  }
+  };
 
   stepClick = () => {
     const tm = this.tm;
@@ -69,40 +81,32 @@ export default class App extends React.Component
       return;
     tm.step();
 
-    let tick = (' ' + tm.tick).slice(-2);
     let head = tm.tape[tm.headPos];
     let left = tm.tape.slice(MARGIN - 5, tm.headPos).join('');
     let right = tm.tape.slice(tm.headPos + 1, MARGIN + 25).join('') ;
     let state = (tm.state + '    ').slice(0, 5);
 
-    this.state.printed.push({tick, head, left, right, state});
+    this.state.printed.push({head, left, right, state});
     this.setState({printed: this.state.printed});
-  }
+  };
 
   runClick = () => {
     this.init();
+    const step = this.stepClick.bind(this);
+    const tm = this.tm;
+    // movie
+    let timer = setInterval( () => {
+      step();
+      if (tm.isStopped) {
+        clearInterval(timer);
+        timer = null;
+      }
+    }, 100);
+  };
 
-    // timer = setInterval(function() {
-    //   step();
-    //   if (tm.stopped) {
-    //     clearInterval(timer);
-    //     timer = null;
-    //   }
-    // }, 10);
-
-  }
-
-  init = () => {
-    this.tm = new Turing(this.state.program, this.state.input);
-    // clear printer
-    this.setState({printed: []})
-    // if (timer) {
-    //   clearInterval(timer);
-    //   timer = null;
-    // }
-    // print(tm);
-  }
-
+  helpClick = () => {
+    this.setState({helpOpen: !this.state.helpOpen});
+  };
 
 }
 

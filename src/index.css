@@ -1,33 +1,25 @@
-h2,h3 {
+h1 {
   color: mediumblue;
 }
 textarea {
-  width: 110px;
+  width: 120px;
   height: 300px;
 }
 
-#input {
-  width: 110px;
+input {
+  width: 120px;
   margin-bottom: 3px;
 }
 
-#helpText {
-  display: none;
-  border: thin solid gray;
-  padding: 5px;
-}
-
-#printer {
-  margin-top: 0;
-  margin-left: 10px;
-  white-space: pre;
+button {
+  color: blue;
+  min-width: 30px;
 }
 
 td {
   display: inline-block;
   vertical-align: top;
 }
-
 .black {
   color: black;
 }
@@ -40,9 +32,11 @@ td {
   font-weight: bold;
   text-decoration: underline;
   color: mediumblue;
-
 }
 
-button {
-  color: blue;
+.help {
+  border: gray solid thin;
+  padding: 5px;
+  margin-top: 0;
+  background-color: aliceblue;
 }
