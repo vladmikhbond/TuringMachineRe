@@ -17,7 +17,7 @@ export default class Area extends React.Component
     }
 
     changeHandler(event) {
-        const text = event.target.program;
+        const text = event.target.value;
         this.setState({program: text});
         this.props.onChange(text);
     }

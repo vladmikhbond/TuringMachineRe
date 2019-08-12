@@ -13,7 +13,6 @@ export default class App extends React.Component
   constructor(props) {
     super(props);
     this.state = {input: 'aaa', program: sample, printed: [] };
-
   }
 
   render() {
@@ -22,15 +21,15 @@ export default class App extends React.Component
           <tbody>
           <tr>
             <td>
-              <Area value={this.state.program} onChange={this.areaChangedHandler.bind(this)}/>
+              <Area value={this.state.program} onChange={this.areaChangedHandler}/>
               <div>
-                <input value={this.state.input} onChange={this.inputChangeHandler.bind(this)}/>
+                <input value={this.state.input} onChange={this.inputChangeHandler}/>
               </div>
               <div>
-                <button id="runButton" onClick={this.runClick.bind(this)}> >></button>
-                <button id="initButton"> ■</button>
-                <button id="stepButton" onClick={this.stepClick.bind(this)}> ></button>
-                <button id="helpButton"> ?</button>
+                <button onClick={this.initClick}> ■</button>
+                <button onClick={this.runClick}> >></button>
+                <button onClick={this.stepClick}> ></button>
+                <button> ?</button>
               </div>
             </td>
             <td>
@@ -46,46 +45,43 @@ export default class App extends React.Component
     this.init();
   }
 
-  inputChangeHandler(e) {
-    this.setState({input: e.target.program.trim()});
+  /////////////////////////// change handlers /////////////////////////
+
+  inputChangeHandler = (e) => {
+    this.setState({input: e.target.value.trim()});
+    setTimeout(this.init, 100);
   }
 
-  areaChangedHandler (program) {
-    this.setState({program: program.trim()})
+  areaChangedHandler = (e) => {
+    this.setState({program: e.trim()});
+    setTimeout(this.init, 100);
   }
 
+  /////////////////////////// button click handlers /////////////////////////
 
-
-  init() {
-     this.tm = new Turing(this.state.program, this.state.input);
-    // printer.innerHTML = "";
-    // if (timer) {
-    //   clearInterval(timer);
-    //   timer = null;
-    // }
-    // print(tm);
+  initClick = () => {
+    this.init();
   }
 
-  stepClick() {
-    const t = this.tm;
-    if (t.isStopped)
+  stepClick = () => {
+    const tm = this.tm;
+    if (tm.isStopped)
       return;
-    t.step();
+    tm.step();
 
-    let tick = (' ' + t.tick).slice(-2);
-    let head = t.tape[t.headPos];
-
-    let left = t.tape.slice(MARGIN - 5, t.headPos).join('');
-    let right = t.tape.slice(t.headPos + 1, MARGIN + 25).join('') ;
-    let state = (t.state + '    ').slice(0, 5);
+    let tick = (' ' + tm.tick).slice(-2);
+    let head = tm.tape[tm.headPos];
+    let left = tm.tape.slice(MARGIN - 5, tm.headPos).join('');
+    let right = tm.tape.slice(tm.headPos + 1, MARGIN + 25).join('') ;
+    let state = (tm.state + '    ').slice(0, 5);
 
     this.state.printed.push({tick, head, left, right, state});
     this.setState({printed: this.state.printed});
-
   }
 
-  runClick() {
+  runClick = () => {
     this.init();
+
     // timer = setInterval(function() {
     //   step();
     //   if (tm.stopped) {
@@ -95,6 +91,18 @@ export default class App extends React.Component
     // }, 10);
 
   }
+
+  init = () => {
+    this.tm = new Turing(this.state.program, this.state.input);
+    // clear printer
+    this.setState({printed: []})
+    // if (timer) {
+    //   clearInterval(timer);
+    //   timer = null;
+    // }
+    // print(tm);
+  }
+
 
 }
 
