@@ -1,14 +1,11 @@
 import React from 'react';
-
+import {SAMPLE} from './App.js';
 
 export default class Area extends React.Component
 {
-    constructor(props) {
-        super(props);
-        this.state = {
-            program: props.program,
-        };
-    }
+    state = {
+        program: SAMPLE,
+    };
 
     componentDidUpdate(prevProps) {
         this.area.focus();

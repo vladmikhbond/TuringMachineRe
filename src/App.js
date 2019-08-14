@@ -4,22 +4,22 @@ import Printer from './Printer.js';
 import Help from './Help.js';
 import {Turing, MARGIN} from "./model";
 
-// const sample = `sa = sbR
-// s. = s.STOP2`;
-// const INPUT = 'aaa';
+export const SAMPLE = `sa = sbR
+s. = s.STOP2`;
+const INPUT = 'aaa';
 
-const SAMPLE = `a1 = b.R
-b1 = b1R
-b. = c2R
-c. = d2L
-d2 = d2L
-d1 = d1L
-d. = a.R
-b2 = b2R
-a2 = e2
-e2 = e1R
-e. = e.STOP`;
-const INPUT = '11';
+// export const SAMPLE = `a1 = b.R
+// b1 = b1R
+// b. = c2R
+// c. = d2L
+// d2 = d2L
+// d1 = d1L
+// d. = a.R
+// b2 = b2R
+// a2 = e2
+// e2 = e1R
+// e. = e.STOP`;
+// const INPUT = '11';
 
 export default class App extends React.Component
 {
@@ -41,7 +41,7 @@ export default class App extends React.Component
           <tbody>
           <tr>
             <td>
-              <Area program={this.state.program} highlight={this.state.highlight} onChange={this.areaChangedHandler}/>
+              <Area highlight={this.state.highlight} onChange={this.areaChangedHandler}/>
               <div>
                 <input value={this.state.input} onChange={this.inputChangeHandler}/>
               </div>
