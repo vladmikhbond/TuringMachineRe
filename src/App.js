@@ -12,7 +12,15 @@ export default class App extends React.Component
 {
   constructor(props) {
     super(props);
-    this.state = {input: 'aaa', program: sample, printed: [], helpOpen: false };
+    this.state = {
+      input: 'aaa',
+      program: sample,
+      printed: [],
+      helpIsOpen: false,
+      stateChar: '',
+      selStart: 0,
+      selEnd: 5
+    };
   }
 
   render() {
@@ -21,7 +29,7 @@ export default class App extends React.Component
           <tbody>
           <tr>
             <td>
-              <Area value={this.state.program} onChange={this.areaChangedHandler}/>
+              <Area program={this.state.program} selStart={this.state.selStart} selEnd={this.state.selEnd} onChange={this.areaChangedHandler}/>
               <div>
                 <input value={this.state.input} onChange={this.inputChangeHandler}/>
               </div>
@@ -38,7 +46,7 @@ export default class App extends React.Component
           </tr>
           <tr>
             <td colSpan="2">
-              <Help open={this.state.helpOpen} />
+              <Help open={this.state.helpIsOpen} />
             </td>
           </tr>
           </tbody>
@@ -54,7 +62,7 @@ export default class App extends React.Component
     // create model
     this.tm = new Turing(this.state.program, this.state.input);
     // clear printer
-    this.setState({printed: []})
+    this.setState({printed: [], stateChar: ''})
   }
 
   /////////////////////////// change handlers /////////////////////////
@@ -81,14 +89,27 @@ export default class App extends React.Component
       return;
     tm.step();
 
-    const head = tm.tape[tm.headPos];
+    // change state
+    const char = tm.tape[tm.headPos];
+    const state = tm.state;
     const left = tm.tape.slice(MARGIN - 5, tm.headPos).join('');
     const right = tm.tape.slice(tm.headPos + 1, MARGIN + 25).join('') ;
-    const state = (tm.state + '    ').slice(0, 5);
-
     const arr = this.state.printed.slice();
-    arr.push({head, left, right, state});
-    this.setState({printed: arr});
+    arr.push({head: char, left, right, state});
+    this.setState({printed: arr, stateChar: state + char});
+
+    // highlight rule
+    let leftPart = '\n' + state + char;
+    let i = ('\n' + this.state.program).indexOf(leftPart);
+    let selStart = 0, selEnd = 0;
+    if (i !== -1) {
+      selStart = i;
+      selEnd = this.state.program.indexOf('\n', i + 3);
+    } else {
+      selEnd = selStart;
+    }
+    this.setState({selStart, selEnd});
+
   };
 
   runClick = () => {
@@ -106,8 +127,8 @@ export default class App extends React.Component
   };
 
   helpClick = () => {
-    const flag = !this.state.helpOpen;
-    this.setState({helpOpen: flag});
+    const flag = !this.state.helpIsOpen;
+    this.setState({helpIsOpen: flag});
   };
 
 }
