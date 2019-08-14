@@ -26,14 +26,10 @@ export default class Area extends React.Component
 
 
     render() {
-        let divStyle = {
-            position: 'absolute', top: '30px'
-        };
-
+        let h = 50 + 18 * this.props.line;
         return (
             <div>
-                <div style={divStyle}>
-                >CS={this.props.selStart} : {this.props.selEnd}</div>
+                <div id="pointer" style={ {top:`${h}px`} }></div>
                 <textarea value={this.state.program} autoFocus
                           onChange={this.changeHandler}
                           ref={ el => { this.area = el; } } />

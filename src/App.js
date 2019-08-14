@@ -29,7 +29,7 @@ export default class App extends React.Component
           <tbody>
           <tr>
             <td>
-              <Area program={this.state.program} selStart={this.state.selStart} selEnd={this.state.selEnd} onChange={this.areaChangedHandler}/>
+              <Area program={this.state.program} line={3} onChange={this.areaChangedHandler}/>
               <div>
                 <input value={this.state.input} onChange={this.inputChangeHandler}/>
               </div>
