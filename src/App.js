@@ -4,22 +4,34 @@ import Printer from './Printer.js';
 import Help from './Help.js';
 import {Turing, MARGIN} from "./model";
 
-const sample = `sa = sbR
-s. = s.STOP`;
+// const sample = `sa = sbR
+// s. = s.STOP2`;
+// const INPUT = 'aaa';
 
+const SAMPLE = `a1 = b.R
+b1 = b1R
+b. = c2R
+c. = d2L
+d2 = d2L
+d1 = d1L
+d. = a.R
+b2 = b2R
+a2 = e2
+e2 = e1R
+e. = e.STOP`;
+const INPUT = '11';
 
 export default class App extends React.Component
 {
   constructor(props) {
     super(props);
     this.state = {
-      input: 'aaa',
-      program: sample,
+      input: INPUT,
+      program: SAMPLE,
       printed: [],
       helpIsOpen: false,
       stateChar: '',
-      selStart: 0,
-      selEnd: 5
+      highlight: 0
     };
   }
 
@@ -29,15 +41,15 @@ export default class App extends React.Component
           <tbody>
           <tr>
             <td>
-              <Area program={this.state.program} line={3} onChange={this.areaChangedHandler}/>
+              <Area program={this.state.program} highlight={this.state.highlight} onChange={this.areaChangedHandler}/>
               <div>
                 <input value={this.state.input} onChange={this.inputChangeHandler}/>
               </div>
               <div>
-                <button onClick={this.initClick}> ■</button>
-                <button onClick={this.runClick}> >></button>
-                <button onClick={this.stepClick}> ></button>
-                <button onClick={this.helpClick}> ?</button>
+                <button onClick={this.initClick}> ■ </button>
+                <button onClick={this.runClick}> >> </button>
+                <button onClick={this.stepClick}> > </button>
+                <button onClick={this.helpClick}> ? </button>
               </div>
             </td>
             <td>
@@ -62,7 +74,20 @@ export default class App extends React.Component
     // create model
     this.tm = new Turing(this.state.program, this.state.input);
     // clear printer
-    this.setState({printed: [], stateChar: ''})
+    this.setState({printed: [], stateChar: '', highlight: 0});
+    //
+    if (this.timer) {
+      clearInterval(this.timer);
+      this.timer = null;
+    }
+  };
+
+  highlight(stateChar) {
+    const lines = this.state.program.split('\n');
+    let i = lines.findIndex(e => e.startsWith(stateChar));
+    if (i === -1)
+      i = -1000;
+    this.setState({highlight: i});
   }
 
   /////////////////////////// change handlers /////////////////////////
@@ -98,30 +123,21 @@ export default class App extends React.Component
     arr.push({head: char, left, right, state});
     this.setState({printed: arr, stateChar: state + char});
 
-    // highlight rule
-    let leftPart = '\n' + state + char;
-    let i = ('\n' + this.state.program).indexOf(leftPart);
-    let selStart = 0, selEnd = 0;
-    if (i !== -1) {
-      selStart = i;
-      selEnd = this.state.program.indexOf('\n', i + 3);
-    } else {
-      selEnd = selStart;
-    }
-    this.setState({selStart, selEnd});
+    this.highlight(state+char);
 
   };
+
 
   runClick = () => {
     this.init();
     const step = this.stepClick.bind(this);
     const tm = this.tm;
     // movie
-    let timer = setInterval( () => {
+    this.timer = setInterval( () => {
       step();
       if (tm.isStopped) {
-        clearInterval(timer);
-        timer = null;
+        clearInterval(this.timer);
+        this.timer = null;
       }
     }, 100);
   };

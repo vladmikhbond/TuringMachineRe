@@ -15,21 +15,19 @@ export default class Area extends React.Component
     }
 
     componentDidMount(){
-        this.area.focus();
+        //this.area.focus();
     }
 
     componentDidUpdate(prevProps) {
-        this.area.selectionStart = this.props.selStart;
-        this.area.selectionEnd = this.props.selEnd;
         this.area.focus();
     }
 
 
     render() {
-        let h = 50 + 18 * this.props.line;
+        let top = 86 + 15.2 * this.props.highlight;
         return (
             <div>
-                <div id="pointer" style={ {top:`${h}px`} }></div>
+                <div id="pointer" style={ {top:`${top}px`} }>&nbsp;</div>
                 <textarea value={this.state.program} autoFocus
                           onChange={this.changeHandler}
                           ref={ el => { this.area = el; } } />

@@ -2,8 +2,10 @@ h1 {
   color: mediumblue;
 }
 textarea {
-  width: 120px;
+  min-width: 120px;
+  max-width: 120px;
   height: 300px;
+  font: 400 13px Arial;
 }
 
 input {
@@ -44,7 +46,6 @@ td {
 #pointer {
   position: absolute;
   width: 120px;
-  height: 18px;
-  /*left: 0px;*/
-  background-color: rgba(200, 200, 200, 0.25);
+  background-color: rgba(0, 00, 255, 0.25);
+  font: 400 13px Arial;
 }

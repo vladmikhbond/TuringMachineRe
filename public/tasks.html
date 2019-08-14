@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<>
+<h4>Увеличить унарное число на 1</h4>
+<pre>
+a1 = a1R
+a. = b1RSTOP
+=======
+111111
+</pre>
+
+<h4>Сложить два унарных числа</h4>
+<pre>
+a1 = b.R
+b1 = b1R
+b+ = b1R
+b. = b.STOP
+====
+111+11
+</pre>
+
+<h4>Умножить унарное число на 2</h4>
+<pre>
+a1 = b.R
+b1 = b1R
+b. = c2R
+c. = d2L
+d2 = d2L
+d1 = d1L
+d. = a.R
+b2 = b2R
+a2 = e2
+e2 = e1R
+e. = e.STOP
+=======
+11
+</pre>
+
+<h4>Вычесть из большего числа меньшее</h4>
+<pre>
+a1 = a1R
+a- = b-R
+b1 = c-L
+c- = c-L
+c1 = b-R
+b- = b-R
+b. = d.L
+d- = d.L
+d1 = d1RSTOP
+=====
+1111-11
+</pre>
+
+<h4>Проверить правильность расстановки скобок в выражениях вида  ()*(*(***)**)</h4>
+<pre>
+s* = s*R
+s( = s(R
+s) = a*L
+s. = b.L
+
+a* = a*L
+a( = s*R
+a. = aNRSTOP
+
+b( = bNRSTOP
+b* = b*L
+b. = bYRSTOP
+
+()(()))
+</pre>
+
+<h4>Очень простая сортировка</h4>
+<pre>
+s0 = s0R
+s1 = u1R
+s. = s.STOP
+
+u1 = u1R
+u0 = r1L
+u. = u.STOP
+
+r1 = b0L
+
+b0 = b0L
+b1 = b1L
+b. = s.R
+
+001010
+</pre>
+
+<h4>Один проход пузырька</h4>
+<pre>
+s0 = z0R
+s1 = u1R
+
+z0 = z0R
+z1 = u1R
+z. = z.STOP
+
+u1 = u1R
+u0 = r1L
+u. = u.STOP
+
+r1 = u0R
+
+0001010
+</pre>
+
+
+</body>
+</html>
